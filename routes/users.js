@@ -135,7 +135,7 @@ const pendingFriendRequests = async function (req, res) {
   try {
     const pendingRequests = await knex("friendship").select().where({
       receive_user_id: userId,
-      is_friend: 0,
+      is_friend: false,
     });
 
     res.status(200).json(pendingRequests);
@@ -168,6 +168,37 @@ const acceptFriendRequest = async function (req, res) {
   }
 };
 
+//GET A USER'S FRIEND LIST
+const friends = async function (req, res) {
+  const userId = req.params.id;
+
+  try {
+    const rows = await knex
+      .select("u.*")
+      .from("users as u")
+      .join("friendship as f", function () {
+        this.on("u.id", "=", "f.send_user_id").orOn(
+          "u.id",
+          "=",
+          "f.receive_user_id"
+        );
+      })
+      .where(function () {
+        this.where("f.send_user_id", userId).orWhere(
+          "f.receive_user_id",
+          userId
+        );
+      })
+      .whereNot("u.id", userId)
+      .where("f.is_friend", true);
+
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+};
+
 module.exports = {
   signup,
   login,
@@ -176,4 +207,5 @@ module.exports = {
   friendRequest,
   pendingFriendRequests,
   acceptFriendRequest,
+  friends,
 };
