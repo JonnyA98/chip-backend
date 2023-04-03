@@ -95,10 +95,6 @@ const users = async (req, res) => {
   }
 };
 
-// module.exports = signup;
-// module.exports = login;
-// module.exports = userProfile;
-
 module.exports = {
   signup,
   login,
