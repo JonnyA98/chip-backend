@@ -85,6 +85,15 @@ const userProfile = async (req, res) => {
   }
 };
 
+const users = async (req, res) => {
+  try {
+    const users = await knex("users").whereNot({ id: req.params.id }).first();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: "Can't fetch users" });
+  }
+};
+
 // module.exports = signup;
 // module.exports = login;
 // module.exports = userProfile;
