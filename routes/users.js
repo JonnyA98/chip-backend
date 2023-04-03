@@ -85,10 +85,12 @@ const userProfile = async (req, res) => {
   }
 };
 
-//GET ALL USERS NON FRIENDS (DOESN'T GET USER)
+//GET ALL USERS NOT INCLUDING CURRENT USERID
 const users = async (req, res) => {
+  const userId = req.params.id;
+
   try {
-    const users = await knex("users").whereNot({ id: req.params.id });
+    const users = await knex("users").whereNot({ id: userId });
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: "Can't fetch users" });
@@ -125,10 +127,53 @@ const friendRequest = async (req, res) => {
   }
 };
 
+//SHOW ALL PENDING FRIEND REQUESTS
+
+const pendingFriendRequests = async function (req, res) {
+  const userId = req.params.id;
+
+  try {
+    const pendingRequests = await knex("friendship").select().where({
+      receive_user_id: userId,
+      is_friend: 0,
+    });
+
+    res.status(200).json(pendingRequests);
+  } catch (error) {
+    res.status(500).json({ message: "Can't fetch pending friend requests" });
+  }
+};
+
+//ACCEPT A FRIEND REQUEST
+
+const acceptFriendRequest = async function (req, res) {
+  const friendRequestId = req.params.id;
+
+  try {
+    const friendRequest = await knex("friendship")
+      .where({ id: friendRequestId, is_friend: false })
+      .first();
+
+    if (!friendRequest) {
+      return res.status(404).json({ message: "Friend request not found" });
+    }
+
+    await knex("friendship")
+      .where({ id: friendRequestId })
+      .update({ is_friend: true });
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(500).json({ message: "Can't update friendship request" });
+  }
+};
+
 module.exports = {
   signup,
   login,
   userProfile,
   users,
   friendRequest,
+  pendingFriendRequests,
+  acceptFriendRequest,
 };

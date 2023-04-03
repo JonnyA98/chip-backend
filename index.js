@@ -6,11 +6,16 @@ const passport = require("passport");
 const expressSession = require("express-session");
 const cookieParser = require("cookie-parser");
 const bycrypt = require("bcrypt");
-const { signup } = require("./routes/users");
-const { login } = require("./routes/users");
-const { userProfile } = require("./routes/users");
-const { users } = require("./routes/users");
-const { friendRequest } = require("./routes/users");
+const {
+  signup,
+  login,
+  userProfile,
+  users,
+  friendRequest,
+  pendingFriendRequests,
+  acceptFriendRequest,
+} = require("./routes/users");
+
 const authorise = require("./auth");
 
 const app = express();
@@ -35,8 +40,10 @@ app.use(
 app.post("/api/users", signup);
 app.post("/api/user", login);
 app.get("/api/user", authorise, userProfile);
-app.get("/api/users/non-friends/:id", users);
+app.get("/api/users/:id", users);
 app.post("/api/users/friend-request", friendRequest);
+app.get("/api/users/friend-requests/:id", pendingFriendRequests);
+app.patch("/api/users/friend-accept/:id", acceptFriendRequest);
 
 if (!process.env.BACKEND_PORT) {
   process.env.BACKEND_PORT === 3001;
