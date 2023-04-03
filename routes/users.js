@@ -1,7 +1,7 @@
 const knex = require("knex")(require("../knexfile"));
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
+//SENDS A POST REQUEST TO CREATE A NEW ACCOUNT
 const signup = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -37,7 +37,7 @@ const signup = async (req, res) => {
     }
   });
 };
-
+//SENDS A POST REQUEST TO GET A JWT WHEN USER ENTERS THEIR LOGIN DETAILS
 const login = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password || Object.keys(req.body).length > 2) {
@@ -72,7 +72,7 @@ const login = async (req, res) => {
     res.status(400).json({ message: "User not found" });
   }
 };
-
+//GETS USER PROFILE USING JWT
 const userProfile = async (req, res) => {
   try {
     const user = await knex("users").where({ id: req.token.id }).first();
@@ -85,9 +85,10 @@ const userProfile = async (req, res) => {
   }
 };
 
+//GET ALL USERS EXCEPT CURRENT ONE
 const users = async (req, res) => {
   try {
-    const users = await knex("users").whereNot({ id: req.params.id }).first();
+    const users = await knex("users").whereNot({ id: req.params.id });
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: "Can't fetch users" });
@@ -102,4 +103,5 @@ module.exports = {
   signup,
   login,
   userProfile,
+  users,
 };

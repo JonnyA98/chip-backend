@@ -9,6 +9,7 @@ const bycrypt = require("bcrypt");
 const { signup } = require("./routes/users");
 const { login } = require("./routes/users");
 const { userProfile } = require("./routes/users");
+const { users } = require("./routes/users");
 const authorise = require("./auth");
 
 const app = express();
@@ -33,6 +34,7 @@ app.use(
 app.post("/api/users", signup);
 app.post("/api/user", login);
 app.get("/api/user", authorise, userProfile);
+app.get("/api/users/:id", users);
 
 if (!process.env.BACKEND_PORT) {
   process.env.BACKEND_PORT === 3001;
