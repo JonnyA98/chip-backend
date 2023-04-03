@@ -54,7 +54,7 @@ exports.up = function (knex) {
         .onDelete("CASCADE");
 
       table.boolean("is_friend").defaultTo(false);
-      table.timestamp("friends_from");
+      table.timestamp("friends_from").defaultTo(knex.fn.now());
     })
     .createTable("gifts", function (table) {
       table.increments("id").primary();

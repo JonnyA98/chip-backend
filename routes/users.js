@@ -85,7 +85,7 @@ const userProfile = async (req, res) => {
   }
 };
 
-//GET ALL USERS EXCEPT CURRENT ONE
+//GET ALL USERS NON FRIENDS (DOESN'T GET USER)
 const users = async (req, res) => {
   try {
     const users = await knex("users").whereNot({ id: req.params.id });
@@ -108,7 +108,7 @@ const friendRequest = async (req, res) => {
   }
 
   const sendUserExists = await knex("users").where({ id: send_user_id });
-  const receiveUserExists = await kknex("users").where({ id: receive_user_id });
+  const receiveUserExists = await knex("users").where({ id: receive_user_id });
 
   if (!sendUserExists.length || !receiveUserExists.length) {
     return res.status(400).json({
@@ -118,7 +118,7 @@ const friendRequest = async (req, res) => {
   }
 
   try {
-    await knex("friendship").inset({ ...req.body });
+    await knex("friendship").insert({ ...req.body });
     res.json({ success: true });
   } catch (error) {
     console.log(error);
@@ -130,4 +130,5 @@ module.exports = {
   login,
   userProfile,
   users,
+  friendRequest,
 };

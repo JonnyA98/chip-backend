@@ -10,6 +10,7 @@ const { signup } = require("./routes/users");
 const { login } = require("./routes/users");
 const { userProfile } = require("./routes/users");
 const { users } = require("./routes/users");
+const { friendRequest } = require("./routes/users");
 const authorise = require("./auth");
 
 const app = express();
@@ -34,7 +35,8 @@ app.use(
 app.post("/api/users", signup);
 app.post("/api/user", login);
 app.get("/api/user", authorise, userProfile);
-app.get("/api/users/:id", users);
+app.get("/api/users/non-friends/:id", users);
+app.post("/api/users/friend-request", friendRequest);
 
 if (!process.env.BACKEND_PORT) {
   process.env.BACKEND_PORT === 3001;
