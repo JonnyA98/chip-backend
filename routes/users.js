@@ -95,6 +95,36 @@ const users = async (req, res) => {
   }
 };
 
+//MAKE POST REQUEST TO SEND FRIEND REQUEST
+
+const friendRequest = async (req, res) => {
+  const { send_user_id, receive_user_id } = req.body;
+  if (!send_user_id || !receive_user_id) {
+    return res.status(400).json({
+      error: true,
+      message: "Incomplete POST body",
+      requiredProperties: ["send_user_id", "receive_user_id"],
+    });
+  }
+
+  const sendUserExists = await knex("users").where({ id: send_user_id });
+  const receiveUserExists = await kknex("users").where({ id: receive_user_id });
+
+  if (!sendUserExists.length || !receiveUserExists.length) {
+    return res.status(400).json({
+      error: true,
+      message: "Could not add friends as user/users do not exist",
+    });
+  }
+
+  try {
+    await knex("friendship").inset({ ...req.body });
+    res.json({ success: true });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   signup,
   login,

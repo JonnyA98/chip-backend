@@ -53,7 +53,7 @@ exports.up = function (knex) {
         .onUpdate("CASCADE")
         .onDelete("CASCADE");
 
-      table.boolean("is_friend").notNullable();
+      table.boolean("is_friend").defaultTo(false);
       table.timestamp("friends_from");
     })
     .createTable("gifts", function (table) {
