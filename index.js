@@ -16,6 +16,7 @@ const {
   acceptFriendRequest,
   friends,
 } = require("./routes/users");
+const { createGift, recieverGifts, chip, editGift } = require("./routes/gifts");
 
 const authorise = require("./auth");
 
@@ -46,6 +47,10 @@ app.post("/api/users/friend-request", friendRequest);
 app.get("/api/users/friend-requests/:id", pendingFriendRequests);
 app.patch("/api/users/friend-accept/:id", acceptFriendRequest);
 app.get("/api/users/friends/:id", friends);
+app.post("/api/gifts/create", createGift);
+app.get("/api/gifts/reciever/:id", recieverGifts);
+app.post("/api/gifts/chip", chip);
+app.patch("/api/gifts/edit-gift", editGift);
 
 if (!process.env.BACKEND_PORT) {
   process.env.BACKEND_PORT === 3001;

@@ -144,7 +144,7 @@ const pendingFriendRequests = async function (req, res) {
   }
 };
 
-//ACCEPT A FRIEND REQUEST
+//ACCEPT A FRIEND REQUEST THE PARAM IS THE KEY FROM THE "FRIENDSHIP" TABLE
 
 const acceptFriendRequest = async function (req, res) {
   const friendRequestId = req.params.id;

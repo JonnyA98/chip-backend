@@ -79,7 +79,7 @@ exports.up = function (knex) {
       table.decimal("target_money").notNullable();
       table.decimal("money_left").notNullable();
       table.timestamp("start_date").defaultTo(knex.fn.now());
-      table.timestamp("end-date").notNullable;
+      table.timestamp("end_date").notNullable();
     })
     .createTable("comments", function (table) {
       table.increments("id").primary();
@@ -100,6 +100,25 @@ exports.up = function (knex) {
         .onUpdate("CASCADE")
         .onDelete("CASCADE");
       table.timestamp("comment_time").defaultTo(knex.fn.now());
+    })
+    .createTable("chips", function (table) {
+      table.increments("id").primary();
+      table.integer("user_id").unsigned().notNullable();
+      table
+        .foreign("user_id")
+        .references("id")
+        .inTable("users")
+        .onUpdate("CASCADE")
+        .onDelete("CASCADE");
+      table.integer("gift_id").unsigned().notNullable();
+      table
+        .foreign("gift_id")
+        .references("id")
+        .inTable("gifts")
+        .onUpdate("CASCADE")
+        .onDelete("CASCADE");
+      table.decimal("chip_amount").notNullable();
+      table.timestamp("comment_time").defaultTo(knex.fn.now());
     });
 };
 
@@ -114,5 +133,6 @@ exports.down = function (knex) {
     .dropTable("interests")
     .dropTable("friendship")
     .dropTable("gifts")
-    .dropTable("comments");
+    .dropTable("comments")
+    .dropTable("chips");
 };
