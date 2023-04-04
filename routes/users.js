@@ -173,7 +173,7 @@ const friends = async function (req, res) {
   const userId = req.params.id;
 
   try {
-    const rows = await knex
+    const friends = await knex
       .select("u.*")
       .from("users as u")
       .join("friendship as f", function () {
@@ -192,7 +192,7 @@ const friends = async function (req, res) {
       .whereNot("u.id", userId)
       .where("f.is_friend", true);
 
-    res.json(rows);
+    res.json(friends);
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
