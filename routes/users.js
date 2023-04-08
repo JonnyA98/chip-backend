@@ -221,10 +221,33 @@ const friends = async function (req, res) {
 };
 
 //EDIT A USER'S PROFILE:
-const editProfile = async function (req, res) {
-  const userId = req.params.id;
+
+const updateUser = async function (req, res) {
+  const userId = req.token.id;
+  const { color, interest, image_url } = req.body;
+
   try {
+    const [existingInterest] = await knex("interests").where({ interest });
+
+    let interestId;
+
+    if (existingInterest) {
+      interestId = existingInterest.id;
+    } else {
+      const insertedRows = await knex("interests").insert({ interest });
+      interestId = insertedRows[0];
+    }
+
+    await knex("users").where({ id: userId }).update({ color, image_url });
+
+    await knex("user_interest").insert({
+      user_id: userId,
+      interest_id: interestId,
+    });
+    console.log("Received interest:", interest);
+    res.json({ success: true });
   } catch (error) {
+    console.log(error);
     res.sendStatus(500);
   }
 };
@@ -240,4 +263,5 @@ module.exports = {
   acceptFriendRequest,
   friends,
   allUsers,
+  updateUser,
 };
