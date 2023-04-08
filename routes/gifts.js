@@ -71,6 +71,17 @@ const createGift = async (req, res) => {
   }
 };
 
+//GET A PARTICULAR GIFT
+const gift = async (req, res) => {
+  giftId = req.params.id;
+  try {
+    const gift = await knex("gifts").where({ id: giftId });
+    res.json(gift);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 //GET A LIST OF GIFTS FOR A PARTICULAR USER AS RECIEVER
 const recieverGifts = async (req, res) => {
   recipientId = req.params.id;
@@ -83,6 +94,22 @@ const recieverGifts = async (req, res) => {
 
   try {
     const gifts = await knex("gifts").where({ recipient_id: recipientId });
+    res.json(gifts);
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ error: true, message: "Server error couldn't fetch gifts" });
+  }
+};
+
+//GET A LIST OF GIFTS FOR A PARTICULAR USER AS GIVER
+
+const giverGifts = async (req, res) => {
+  giverId = req.params.id;
+
+  try {
+    const gifts = await knex("gifts").where({ sender_id: giverId });
     res.json(gifts);
   } catch (error) {
     console.log(error);
@@ -123,7 +150,7 @@ const editGift = async (req, res) => {
   }
 
   try {
-    gift = await knex("gifts").where({ id: gift_id }).first();
+    const gift = await knex("gifts").where({ id: gift_id }).first();
     console.log(gift);
     console.log(typeof gift.money_left, typeof chip_amount);
     newMoneyLeft = parseFloat(gift.money_left) - parseFloat(chip_amount);
@@ -140,6 +167,8 @@ const editGift = async (req, res) => {
 module.exports = {
   createGift,
   recieverGifts,
+  giverGifts,
   chip,
   editGift,
+  gift,
 };

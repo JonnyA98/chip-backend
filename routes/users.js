@@ -85,6 +85,27 @@ const userProfile = async (req, res) => {
   }
 };
 
+const nonUserProfile = async (req, res) => {
+  const nonUserId = req.params.id;
+  try {
+    const nonUser = await knex("users").where({ id: nonUserId }).first();
+    res.status(200).json(nonUser);
+  } catch (error) {
+    res.status(500).json({ message: "Can't fetch profile data" });
+  }
+};
+
+//GET ALL USERS!!!
+
+const allUsers = async (req, res) => {
+  try {
+    const users = await knex("users");
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: "Can't fetch users" });
+  }
+};
+
 //GET ALL USERS NOT INCLUDING CURRENT USERID
 const users = async (req, res) => {
   const userId = req.params.id;
@@ -193,8 +214,17 @@ const friends = async function (req, res) {
       .where("f.is_friend", true);
 
     res.json(friends);
+    console.log(friends);
   } catch (error) {
-    console.error(error);
+    res.sendStatus(500);
+  }
+};
+
+//EDIT A USER'S PROFILE:
+const editProfile = async function (req, res) {
+  const userId = req.params.id;
+  try {
+  } catch (error) {
     res.sendStatus(500);
   }
 };
@@ -203,9 +233,11 @@ module.exports = {
   signup,
   login,
   userProfile,
+  nonUserProfile,
   users,
   friendRequest,
   pendingFriendRequests,
   acceptFriendRequest,
   friends,
+  allUsers,
 };
