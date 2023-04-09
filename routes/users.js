@@ -150,7 +150,7 @@ const friendRequest = async (req, res) => {
 
 //SHOW ALL PENDING FRIEND REQUESTS
 
-const pendingFriendRequests = async function (req, res) {
+const pendingFriendRequests = async (req, res) => {
   const userId = req.params.id;
 
   try {
@@ -167,7 +167,7 @@ const pendingFriendRequests = async function (req, res) {
 
 //ACCEPT A FRIEND REQUEST THE PARAM IS THE KEY FROM THE "FRIENDSHIP" TABLE
 
-const acceptFriendRequest = async function (req, res) {
+const acceptFriendRequest = async (req, res) => {
   const friendRequestId = req.params.id;
 
   try {
@@ -190,7 +190,7 @@ const acceptFriendRequest = async function (req, res) {
 };
 
 //GET A USER'S FRIEND LIST
-const friends = async function (req, res) {
+const friends = async (req, res) => {
   const userId = req.params.id;
 
   try {
@@ -222,7 +222,7 @@ const friends = async function (req, res) {
 
 //EDIT A USER'S PROFILE:
 
-const updateUser = async function (req, res) {
+const updateUser = async (req, res) => {
   const userId = req.token.id;
   const { color, interest, image_url } = req.body;
 
@@ -252,6 +252,23 @@ const updateUser = async function (req, res) {
   }
 };
 
+//GET A LIST OF INTERESTS FOR A SPECIFIC USER
+const interests = async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    const interests = await knex("user_interest")
+      .select("interests.id as interest_id", "interests.interest")
+      .join("interests", "user_interest.interest_id", "interests.id")
+      .where("user_id", userId);
+
+    res.json(interests);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+};
+
 module.exports = {
   signup,
   login,
@@ -264,4 +281,5 @@ module.exports = {
   friends,
   allUsers,
   updateUser,
+  interests,
 };

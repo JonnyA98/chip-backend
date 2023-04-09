@@ -17,6 +17,7 @@ const {
   friends,
   allUsers,
   updateUser,
+  interests,
 } = require("./routes/users");
 
 const app = express();
@@ -49,7 +50,8 @@ app.get("/api/users/friend-requests/:id", pendingFriendRequests);
 app.patch("/api/users/friend-accept/:id", acceptFriendRequest);
 app.get("/api/users/friends/:id", friends);
 app.get("/api/users/all", allUsers);
-app.put("/api/user/update", authorise, updateUser);
+app.put("/api/users/update", authorise, updateUser);
+app.get("/api/users/interests/:id", interests);
 app.post("/api/uploadimage", (req, res) => {
   uploadImage(req.body.image)
     .then((url) => res.send(url))
