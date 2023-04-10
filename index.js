@@ -28,6 +28,8 @@ const {
   gift,
 } = require("./routes/gifts");
 
+const { giftRecommendations } = require("./openAi");
+
 const app = express();
 
 app.use(bodyParser.json({ limit: "50mb" }));
@@ -71,6 +73,7 @@ app.get("/api/gifts/giver/:id", giverGifts);
 app.post("/api/gifts/chip", chip);
 app.patch("/api/gifts/edit-gift", editGift);
 app.get("/api/gifts/gift/:id", gift);
+app.post("/api/gifts/recommendation", giftRecommendations);
 
 if (!process.env.BACKEND_PORT) {
   process.env.BACKEND_PORT === 3001;
