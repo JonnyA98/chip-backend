@@ -170,6 +170,24 @@ const editGift = async (req, res) => {
   }
 };
 
+//GET LIST OF CHIPS FOR A SPECIFIC GIFT
+const getChips = async (req, res) => {
+  const giftId = req.params.id;
+
+  try {
+    const chips = await knex("chips").where("gift_id", giftId);
+
+    if (!chips || chips.length === 0) {
+      res.status(200).json([]);
+    } else {
+      res.status(200).json(chips);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching chips for the gift." });
+  }
+};
+
 module.exports = {
   createGift,
   recieverGifts,
@@ -177,4 +195,5 @@ module.exports = {
   chip,
   editGift,
   gift,
+  getChips,
 };

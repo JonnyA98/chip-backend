@@ -26,6 +26,7 @@ const {
   chip,
   editGift,
   gift,
+  getChips,
 } = require("./routes/gifts");
 
 const { giftRecommendations } = require("./openAi");
@@ -74,7 +75,7 @@ app.post("/api/gifts/chip", chip);
 app.patch("/api/gifts/edit-gift", editGift);
 app.get("/api/gifts/gift/:id", gift);
 app.post("/api/gifts/recommendation", giftRecommendations);
-
+app.get("/api/gifts/chips/:id", getChips);
 if (!process.env.BACKEND_PORT) {
   process.env.BACKEND_PORT === 3001;
 }
