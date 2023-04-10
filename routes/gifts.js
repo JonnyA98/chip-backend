@@ -84,16 +84,22 @@ const gift = async (req, res) => {
 
 //GET A LIST OF GIFTS FOR A PARTICULAR USER AS RECIEVER
 const recieverGifts = async (req, res) => {
-  recipientId = req.params.id;
-
-  //   if (req.token.id === userId) {
-  //     return res
-  //       .status(401)
-  //       .json({ error: true, message: "You can't see your own gifts!" });
-  //   }
+  const recipientId = req.params.id;
+  const currentUserId = req.body.userId;
 
   try {
-    const gifts = await knex("gifts").where({ recipient_id: recipientId });
+    const gifts = await knex("gifts")
+      .where({ recipient_id: recipientId })
+      .leftJoin("chips", "gifts.id", "chips.gift_id")
+      .select(
+        "gifts.*",
+        knex.raw("MAX(?? = ?) as has_contributed", [
+          "chips.user_id",
+          currentUserId,
+        ])
+      )
+      .groupBy("gifts.id");
+
     res.json(gifts);
   } catch (error) {
     console.log(error);

@@ -19,6 +19,14 @@ const {
   updateUser,
   interests,
 } = require("./routes/users");
+const {
+  createGift,
+  recieverGifts,
+  giverGifts,
+  chip,
+  editGift,
+  gift,
+} = require("./routes/gifts");
 
 const app = express();
 
@@ -57,6 +65,12 @@ app.post("/api/uploadimage", (req, res) => {
     .then((url) => res.send(url))
     .catch((err) => res.status(500).send(err));
 });
+app.post("/api/gifts/create", createGift);
+app.post("/api/gifts/reciever/:id", recieverGifts);
+app.get("/api/gifts/giver/:id", giverGifts);
+app.post("/api/gifts/chip", chip);
+app.patch("/api/gifts/edit-gift", editGift);
+app.get("/api/gifts/gift/:id", gift);
 
 if (!process.env.BACKEND_PORT) {
   process.env.BACKEND_PORT === 3001;

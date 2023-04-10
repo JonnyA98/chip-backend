@@ -140,6 +140,24 @@ const friendRequest = async (req, res) => {
     });
   }
 
+  const existingFriendship = await knex("friendship")
+    .where(function () {
+      this.where({ send_user_id, receive_user_id });
+    })
+    .orWhere(function () {
+      this.where({
+        send_user_id: receive_user_id,
+        receive_user_id: send_user_id,
+      });
+    });
+
+  if (existingFriendship.length) {
+    return res.status(400).json({
+      error: true,
+      message: "Friendship request already exists",
+    });
+  }
+
   try {
     await knex("friendship").insert({ ...req.body });
     res.json({ success: true });
@@ -224,27 +242,41 @@ const friends = async (req, res) => {
 
 const updateUser = async (req, res) => {
   const userId = req.token.id;
-  const { color, interest, image_url } = req.body;
+  const { color, interests, image_url } = req.body;
 
   try {
-    const [existingInterest] = await knex("interests").where({ interest });
+    const interestIds = await Promise.all(
+      interests.map(async (interestItem) => {
+        const existingInterest = await knex("interests")
+          .where({ interest: interestItem.interest })
+          .first();
 
-    let interestId;
-
-    if (existingInterest) {
-      interestId = existingInterest.id;
-    } else {
-      const insertedRows = await knex("interests").insert({ interest });
-      interestId = insertedRows[0];
-    }
+        if (existingInterest) {
+          return existingInterest.id;
+        } else {
+          const insertedRows = await knex("interests").insert({
+            interest: interestItem.interest,
+          });
+          return insertedRows[0];
+        }
+      })
+    );
 
     await knex("users").where({ id: userId }).update({ color, image_url });
 
-    await knex("user_interest").insert({
-      user_id: userId,
-      interest_id: interestId,
-    });
-    console.log("Received interest:", interest);
+    // Remove all existing interests associated with the user
+    await knex("user_interest").where({ user_id: userId }).del();
+
+    // Insert the new list of interests
+    await Promise.all(
+      interestIds.map((interestId) =>
+        knex("user_interest").insert({
+          user_id: userId,
+          interest_id: interestId,
+        })
+      )
+    );
+
     res.json({ success: true });
   } catch (error) {
     console.log(error);
