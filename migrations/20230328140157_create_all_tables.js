@@ -67,7 +67,7 @@ exports.up = function (knex) {
         .onDelete("CASCADE");
 
       table.string("title").notNullable();
-      table.string("description").notNullable();
+      table.string("description", 500).notNullable();
       table.integer("recipient_id").unsigned().notNullable();
       table
         .foreign("recipient_id")
@@ -128,11 +128,11 @@ exports.up = function (knex) {
  */
 exports.down = function (knex) {
   return knex.schema
-    .dropTable("users")
+    .dropTable("chips")
+    .dropTable("comments")
+    .dropTable("gifts")
+    .dropTable("friendship")
     .dropTable("user_interest")
     .dropTable("interests")
-    .dropTable("friendship")
-    .dropTable("gifts")
-    .dropTable("comments")
-    .dropTable("chips");
+    .dropTable("users");
 };
