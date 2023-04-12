@@ -10,7 +10,7 @@ exports.up = function (knex) {
       table.string("email").unique().notNullable();
       table.string("password").notNullable();
       table.string("color").defaultTo("pending");
-      table.string("interest_id").defaultTo("pending");
+
       table.string("image_url").defaultTo("pending");
       table.timestamp("updated_at").defaultTo(knex.fn.now());
     })

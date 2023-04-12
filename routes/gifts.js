@@ -36,6 +36,7 @@ const createGift = async (req, res) => {
       ],
     });
   }
+
   try {
     const friends = await knex
       .select("u.*")
@@ -64,10 +65,22 @@ const createGift = async (req, res) => {
       });
     }
 
-    await knex("gifts").insert({ ...req.body });
+    const [gift_id] = await knex("gifts").insert({ ...req.body });
+
+    // Add a chip for the gift
+    await knex("chips").insert({
+      user_id: sender_id,
+      gift_id: gift_id,
+      chip_amount: target_money - money_left,
+    });
+
     res.json({ success: true });
   } catch (error) {
     console.log(error);
+    res.status(500).json({
+      error: true,
+      message: "Internal Server Error",
+    });
   }
 };
 

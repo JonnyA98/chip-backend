@@ -18,7 +18,7 @@ exports.seed = async function (knex) {
       email: "john@example.com",
       password: bcrypt.hashSync("password123", 10),
       color: "blue",
-      interest_id: 1,
+
       image_url:
         "https://res.cloudinary.com/daiijv2mk/image/upload/w_1000,c_fill,ar_1:1,g_auto,r_max,bo_5px_solid_red,b_rgb:262c35/v1681045699/rq4thzpwjnpb5exylntz.jpg",
       updated_at: new Date(),
@@ -29,7 +29,7 @@ exports.seed = async function (knex) {
       email: "jane@example.com",
       password: bcrypt.hashSync("password456", 10),
       color: "green",
-      interest_id: 2,
+
       image_url:
         "https://res.cloudinary.com/daiijv2mk/image/upload/w_1000,c_fill,ar_1:1,g_auto,r_max,bo_5px_solid_red,b_rgb:262c35/v1681045699/rq4thzpwjnpb5exylntz.jpg",
       updated_at: new Date(),
@@ -40,7 +40,7 @@ exports.seed = async function (knex) {
       email: "bob@example.com",
       password: bcrypt.hashSync("password789", 10),
       color: "red",
-      interest_id: 3,
+
       image_url:
         "https://res.cloudinary.com/daiijv2mk/image/upload/w_1000,c_fill,ar_1:1,g_auto,r_max,bo_5px_solid_red,b_rgb:262c35/v1681045699/rq4thzpwjnpb5exylntz.jpg",
       updated_at: new Date(),

@@ -232,7 +232,6 @@ const friends = async (req, res) => {
       .where("f.is_friend", true);
 
     res.json(friends);
-    console.log(friends);
   } catch (error) {
     res.sendStatus(500);
   }
