@@ -74,7 +74,7 @@ const createGift = async (req, res) => {
       chip_amount: target_money - money_left,
     });
 
-    res.json({ success: true });
+    res.json({ success: true, gift_id: gift_id });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -201,6 +201,24 @@ const getChips = async (req, res) => {
   }
 };
 
+const addGiftComment = async (req, res) => {
+  const { user_id, comment, gift_id } = req.body;
+  if (!user_id || !comment || !gift_id) {
+    return res.status(400).json({
+      error: true,
+      message: "Incomplete POST body",
+      requiredPropperites: "user_id, comment, gift_id",
+    });
+  }
+  try {
+    await knex("comments").insert({ ...req.body });
+    res.json({ success: true });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error adding comment" });
+  }
+};
+
 module.exports = {
   createGift,
   recieverGifts,
@@ -209,4 +227,5 @@ module.exports = {
   editGift,
   gift,
   getChips,
+  addGiftComment,
 };

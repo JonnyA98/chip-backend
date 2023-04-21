@@ -20,7 +20,7 @@ exports.seed = async function (knex) {
       color: "blue",
 
       image_url:
-        "https://res.cloudinary.com/daiijv2mk/image/upload/w_1000,c_fill,ar_1:1,g_auto,r_max,bo_5px_solid_red,b_rgb:262c35/v1681045699/rq4thzpwjnpb5exylntz.jpg",
+        "https://res.cloudinary.com/daiijv2mk/image/upload/w_1000,c_fill,ar_1:1,g_auto,r_max,bo_5px_solid_red,b_rgb:262c35/v1681376157/cyj4qg9igo2qxrrmzjvz.jpg",
       updated_at: new Date(),
     },
     {
@@ -31,7 +31,7 @@ exports.seed = async function (knex) {
       color: "green",
 
       image_url:
-        "https://res.cloudinary.com/daiijv2mk/image/upload/w_1000,c_fill,ar_1:1,g_auto,r_max,bo_5px_solid_red,b_rgb:262c35/v1681045699/rq4thzpwjnpb5exylntz.jpg",
+        "https://res.cloudinary.com/daiijv2mk/image/upload/w_1000,c_fill,ar_1:1,g_auto,r_max,bo_5px_solid_red,b_rgb:262c35/v1681376173/rchhqy9br0jjwxokkibj.jpg",
       updated_at: new Date(),
     },
     {
@@ -42,7 +42,7 @@ exports.seed = async function (knex) {
       color: "red",
 
       image_url:
-        "https://res.cloudinary.com/daiijv2mk/image/upload/w_1000,c_fill,ar_1:1,g_auto,r_max,bo_5px_solid_red,b_rgb:262c35/v1681045699/rq4thzpwjnpb5exylntz.jpg",
+        "https://res.cloudinary.com/daiijv2mk/image/upload/w_1000,c_fill,ar_1:1,g_auto,r_max,bo_5px_solid_red,b_rgb:262c35/v1681376182/zvwz09efbunt5lyviwyf.jpg",
       updated_at: new Date(),
     },
   ]);

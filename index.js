@@ -27,6 +27,7 @@ const {
   editGift,
   gift,
   getChips,
+  addGiftComment,
 } = require("./routes/gifts");
 
 const { giftRecommendations } = require("./openAi");
@@ -77,6 +78,7 @@ app.patch("/api/gifts/edit-gift", editGift);
 app.get("/api/gifts/gift/:id", gift);
 app.post("/api/gifts/recommendation", giftRecommendations);
 app.get("/api/gifts/chips/:id", getChips);
+app.post("/api/gifts/addcomment", addGiftComment);
 
 app.post("/api/gift/create-payment-intent", createPaymentIntent);
 if (!process.env.BACKEND_PORT) {
