@@ -219,6 +219,17 @@ const addGiftComment = async (req, res) => {
   }
 };
 
+const getGiftComments = async (req, res) => {
+  const giftId = req.params.id;
+  try {
+    const comments = await knex("comments").where("gift_id", giftId);
+    res.status(200).json(comments);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error fetching comments for the gift" });
+  }
+};
+
 module.exports = {
   createGift,
   recieverGifts,
@@ -228,4 +239,5 @@ module.exports = {
   gift,
   getChips,
   addGiftComment,
+  getGiftComments,
 };
