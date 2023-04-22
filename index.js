@@ -67,6 +67,7 @@ app.get("/api/users/all", allUsers);
 app.put("/api/users/update", authorise, updateUser);
 app.get("/api/users/interests/:id", interests);
 app.post("/api/uploadimage", (req, res) => {
+  ge;
   uploadImage(req.body.image)
     .then((url) => res.send(url))
     .catch((err) => res.status(500).send(err));

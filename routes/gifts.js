@@ -222,7 +222,17 @@ const addGiftComment = async (req, res) => {
 const getGiftComments = async (req, res) => {
   const giftId = req.params.id;
   try {
-    const comments = await knex("comments").where("gift_id", giftId);
+    const comments = await knex("comments")
+      .join("users", "comments.user_id", "=", "users.id")
+      .where("comments.gift_id", giftId)
+      .select(
+        "comments.id",
+        "comments.comment",
+        "comments.gift_id",
+        "comments.comment_time",
+        "users.id as user_id",
+        "users.name as user_name"
+      );
     res.status(200).json(comments);
   } catch (error) {
     console.log(error);
